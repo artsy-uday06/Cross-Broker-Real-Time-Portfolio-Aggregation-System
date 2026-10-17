@@ -54,4 +54,4 @@ Each team member should use their own GitHub account and make regular, meaningfu
 ## References
 - Python documentation Socket Programming
 - C++ reference Classes, Destructors, String Streams, and Dynamic Memory Management
-- Documentation for selected broker, market-data, and news interfaces
+- Documentation for selected broker, market-data, and news interface
