@@ -15,7 +15,7 @@ Investments held across multiple broker platforms can be inconvenient to review 
 - Calculate holdings, invested amount, current value, and profit/loss.
 - Display relevant market information, news, and an approximate one-year projection.
 
-## Team Avengers
+## Team
 - Uday Raj Singh-Team Lead
 - Soumy Jalal-Team Member
 - Saksham Jain-Team Member
