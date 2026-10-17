@@ -23,4 +23,4 @@ On Windows (MinGW) add `-lws2_32` to the g++ command.
 
 ## Phase III placeholders
 Portfolio currently keeps trades in a dynamic array. The Singly Linked List
-(Uday) and BST (Saksham) will replace it, so only Portfolio.cpp changes.
+and BST  will replace it, so only Portfolio.cpp changes.
