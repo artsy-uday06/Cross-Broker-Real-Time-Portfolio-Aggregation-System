@@ -1,6 +1,6 @@
 # Cross-Broker Real-Time Portfolio Aggregation System
 
-A PBL project by **Team Avengers** to explore how investment information from multiple broker sources can be processed and presented in one portfolio view.
+A PBL project by to explore how investment information from multiple broker sources can be processed and presented in one portfolio view.
 
 ## Problem
 Investments held across multiple broker platforms can be inconvenient to review together. This project proposes a unified view of holdings, invested amount, current value, profit/loss, trade history, market information, and relevant stock news.
