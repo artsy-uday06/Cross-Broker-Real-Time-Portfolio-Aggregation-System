@@ -1,7 +1,3 @@
-// Portfolio.h  -  Owner: Uday Raj Singh
-// Owns all Trade and Holding objects through raw pointers (dynamic memory).
-// NOTE: trades are kept in a dynamic array for now; Phase III replaces it
-// with a Singly Linked List, and holdings lookup with a BST.
 #ifndef PORTFOLIO_H
 #define PORTFOLIO_H
 #include <string>
