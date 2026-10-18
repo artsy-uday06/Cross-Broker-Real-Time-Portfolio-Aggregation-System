@@ -23,11 +23,4 @@ def build_records():
     return records
 
 
-if __name__ == "__main__":
-    recs = build_records()
-    if len(sys.argv) == 3 and sys.argv[1] == "--dump":
-        with open(sys.argv[2], "w", encoding="utf-8") as f:
-            f.write("\n".join(recs) + "\n")
-        print(f"[main] wrote {len(recs)} records to {sys.argv[2]}")
-    else:
-        send_records(recs)
+
