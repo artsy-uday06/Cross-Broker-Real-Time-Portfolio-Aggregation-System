@@ -1,4 +1,3 @@
-// Portfolio.cpp  -  Owner: Uday Raj Singh
 #include "Portfolio.h"
 #include <iostream>
 #include <iomanip>
