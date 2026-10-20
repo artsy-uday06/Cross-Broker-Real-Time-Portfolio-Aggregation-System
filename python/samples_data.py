@@ -20,4 +20,3 @@ SAMPLE_PRICES = {
     "RELIANCE": 2955.10,
     "HDFCBANK": 1702.35,
 }
-
