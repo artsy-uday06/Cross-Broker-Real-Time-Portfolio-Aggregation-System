@@ -1,4 +1,4 @@
-"""collector.py  -  Owner: Soumy Jalal
+"""collector.py  -  Owner: soumy jalal
 Data collection layer. Tries live broker access first and falls back to
 sample data. Credentials are read from environment variables, never
 hard-coded."""
