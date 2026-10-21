@@ -1,10 +1,3 @@
-"""main.py  -  Owner: Soumy Jalal & parth
-Python entry point: collect -> format -> send.
-
-  python main.py              send to the C++ process over TCP (127.0.0.1:5050)
-  python main.py --dump FILE  write the records to FILE instead (for testing the C++ parser)
-"""
-
 import sys
 
 from collector import get_trades, get_prices
