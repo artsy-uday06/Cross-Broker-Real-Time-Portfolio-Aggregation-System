@@ -1,6 +1,4 @@
-# Record Format (Python -> C++)
-
-Owner: Parth (with Uday Raj Singh)
+# Record Format 
 
 One record per line, fields separated by `|`, UTF-8, `\n` terminated.
 
