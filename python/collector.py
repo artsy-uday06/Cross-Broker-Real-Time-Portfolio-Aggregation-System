@@ -1,8 +1,3 @@
-"""collector.py  -  Owner: soumy jalal
-Data collection layer. Tries live broker access first and falls back to
-sample data. Credentials are read from environment variables, never
-hard-coded."""
-
 import os
 
 from sample_data import SAMPLE_TRADES, SAMPLE_PRICES
@@ -14,7 +9,7 @@ def _live_trades():
     sample-data fallback. Implement per-broker calls here where permitted."""
     if not (os.getenv("GROWW_TOKEN") or os.getenv("ZERODHA_TOKEN")):
         return None
-    # TODO: call the permitted broker APIs and map results to the trade dict shape.
+    
     return None
 
 
