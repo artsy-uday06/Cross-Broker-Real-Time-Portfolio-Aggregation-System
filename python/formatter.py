@@ -1,7 +1,3 @@
-"""formatter.py  -  Owner: Parth
-Turns collected data into the delimiter-separated text records
-described in docs/RECORD_FORMAT.md."""
-
 DELIM = "|"
 
 
