@@ -1,7 +1,3 @@
-"""sample_data.py  -  Owner: Soumy Jalal
-Representative sample data in the same shape live broker data would have.
-Used when live broker access is unavailable."""
-
 SAMPLE_TRADES = [
     {"broker": "Groww",   "ticker": "TCS",       "quantity": 10,  "price": 3850.50, "date": "2026-01-12"},
     {"broker": "Groww",   "ticker": "INFY",      "quantity": 25,  "price": 1540.00, "date": "2026-01-20"},
