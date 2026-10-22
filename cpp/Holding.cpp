@@ -10,9 +10,9 @@ void Holding::applyTrade(const Trade& t) {
         invested_ += t.amount();
     } else {
         int sold = -t.quantity();
-        if (sold > quantity_) sold = quantity_;          // never go negative
+        if (sold > quantity_) sold = quantity_;         
         if (quantity_ > 0) {
-            double avgCost = invested_ / quantity_;       // average-cost method
+            double avgCost = invested_ / quantity_;       
             invested_ -= avgCost * sold;
         }
         quantity_ -= sold;
