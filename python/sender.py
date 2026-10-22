@@ -1,6 +1,3 @@
-"""sender.py  -  Owner: Parth
-Sends text records to the C++ process over a local TCP socket."""
-
 import socket
 import time
 
