@@ -7,7 +7,7 @@ class Trade {
 private:
     std::string broker_;
     std::string ticker_;
-    int         quantity_;   // > 0 BUY, < 0 SELL
+    int         quantity_;   
     double      price_;
     std::string date_;
 
