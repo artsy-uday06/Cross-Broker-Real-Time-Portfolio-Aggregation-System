@@ -3,19 +3,19 @@
 #include <string>
 #include "Trade.h"
 
-// One stock held at one broker.
+
 class Holding {
 private:
     std::string broker_;
     std::string ticker_;
     int         quantity_;
-    double      invested_;      // cost basis of shares still held
+    double      invested_;      
     double      currentPrice_;
 
 public:
     Holding(const std::string& broker, const std::string& ticker);
 
-    void applyTrade(const Trade& t);       // updates quantity and invested
+    void applyTrade(const Trade& t);       
     void setCurrentPrice(double price) { currentPrice_ = price; }
 
     const std::string& broker() const { return broker_; }
