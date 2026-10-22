@@ -7,9 +7,9 @@
 class RecordParser {
 public:
     static std::vector<std::string> split(const std::string& line, char delim = '|');
-    static std::string recordType(const std::string& line);   // "TRADE", "PRICE", "END", ...
+    static std::string recordType(const std::string& line);  
 
-    // Returns a heap-allocated Trade (caller/owner must delete), or nullptr if malformed.
+    
     static Trade* parseTrade(const std::string& line);
     static bool   parsePrice(const std::string& line, std::string& ticker, double& price);
 };
