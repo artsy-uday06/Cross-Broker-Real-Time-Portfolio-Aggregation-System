@@ -13,14 +13,14 @@ private:
     void growTrades();
     void growHoldings();
 
-    Portfolio(const Portfolio&);              // no copying (owns raw pointers)
+    Portfolio(const Portfolio&);             
     Portfolio& operator=(const Portfolio&);
 
 public:
     Portfolio();
-    ~Portfolio();                              // deletes every Trade and Holding
+    ~Portfolio();                             
 
-    void addTrade(Trade* t);                   // takes ownership of t
+    void addTrade(Trade* t);                  
     void updatePrice(const std::string& ticker, double price);
 
     int    tradeCount() const { return tradeCount_; }
