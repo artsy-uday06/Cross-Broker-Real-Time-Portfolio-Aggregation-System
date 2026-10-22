@@ -1,6 +1,3 @@
-// main.cpp  -  Owner: Uday Raj Singh
-//   ./portfolio                 wait for the Python process on TCP port 5050
-//   ./portfolio --file FILE     read records from FILE (test the parser without sockets)
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -47,5 +44,5 @@ int main(int argc, char* argv[]) {
     pf.printHoldings();
     pf.printBrokerSummary();
     pf.printTradeHistory();
-    return 0;        // Portfolio destructor frees all trades and holdings
+    return 0;       
 }
