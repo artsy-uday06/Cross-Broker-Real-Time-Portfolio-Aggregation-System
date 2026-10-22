@@ -1,4 +1,4 @@
-// TcpReceiver.cpp  -  Owner: Uday Raj Singh
+
 #include "TcpReceiver.h"
 #include <iostream>
 
