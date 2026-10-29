@@ -1,0 +1,48 @@
+CROSS-BROKER PORTFOLIO — START HERE (Windows)
+
+WHAT THIS DOES
+- Professional multi-page interface with a dedicated Home landing page and separate Dashboard, Positions & Holdings, Trade History, Broker Comparison and Market News views
+- Runs the website in Chrome/Edge on http://127.0.0.1:8000
+- Uses your Python sample_data -> collector -> formatter -> sender pipeline
+- Sends records through the local TCP socket to your C++ receiver
+- C++ Trade/Holding/Portfolio classes calculate portfolio totals
+- Automatically compiles the C++ source when needed
+- No manual add-stock/add-trade controls; current sample data only
+
+REQUIREMENTS (install once)
+1. Python 3 from https://www.python.org/downloads/windows/
+   During setup, tick “Add python.exe to PATH”.
+2. g++ compiler (you already confirmed g++ --version works).
+
+START
+1. Extract the ZIP into a normal folder (not inside the ZIP preview).
+2. Open the proj folder.
+3. Double-click “Open Portfolio Website.vbs”.
+4. Browser opens at http://127.0.0.1:8000.
+
+IF WINDOWS BLOCKS THE LAUNCHER
+Windows may mark files downloaded from the internet. Before extracting:
+1. Right-click the downloaded ZIP -> Properties.
+2. If an “Unblock” checkbox appears, tick it -> Apply -> OK.
+3. Extract the ZIP again and launch the VBS file.
+Only unblock files you trust and have inspected. Do not disable Defender or SmartScreen.
+If there is no Unblock checkbox or policy blocks scripts, use the fallback below.
+
+FALLBACK (no script launcher)
+1. Open this proj folder in File Explorer.
+2. Click the address bar, type cmd, press Enter.
+3. Run: python web_server.py
+4. Open http://127.0.0.1:8000 in Chrome/Edge.
+Keep the server window open while using the site.
+
+AUTO REBUILD / CODE CHANGES
+- C++ .cpp/.h files: save changes and click Refresh data; server detects newer files and recompiles.
+- python/sample_data.py and other Python pipeline files: save, then click Refresh data.
+- web/index.html: save, then refresh the browser.
+
+NOT IMPLEMENTED YET
+- No live Groww/Zerodha API connection or live prices.
+- News page is clearly illustrative; the original source has no news feed.
+- The website is local and only binds to 127.0.0.1.
+
+If startup fails, see website.log in the proj folder for the error.
