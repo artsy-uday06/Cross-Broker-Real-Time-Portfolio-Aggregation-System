@@ -1,21 +1,40 @@
+#include <iostream>
 #include "Holding.h"
+using namespace std;
 
-Holding::Holding(const std::string& broker, const std::string& ticker)
-    : broker_(broker), ticker_(ticker), quantity_(0),
-      invested_(0.0), currentPrice_(0.0) {}
+// constructor of Holding
+Holding::Holding(const char b[], const char t[]) {
+    copyText(broker, b, TEXT_LEN);
+    copyText(ticker, t, TEXT_LEN);
+    quantity = 0;
+    invested = 0;
+    currentPrice = 0;
+}
 
-void Holding::applyTrade(const Trade& t) {
+// updates quantity and invested money for a buy or sell
+void Holding::applyTrade(Trade t) {
     if (t.isBuy()) {
-        quantity_ += t.quantity();
-        invested_ += t.amount();
+        quantity = quantity + t.quantity;
+        invested = invested + t.amount();
     } else {
-        int sold = -t.quantity();
-        if (sold > quantity_) sold = quantity_;         
-        if (quantity_ > 0) {
-            double avgCost = invested_ / quantity_;       
-            invested_ -= avgCost * sold;
+        int sold = -t.quantity;
+        if (sold > quantity) sold = quantity;
+        if (quantity > 0) {
+            double avgCost = invested / quantity;
+            invested = invested - avgCost * sold;
         }
-        quantity_ -= sold;
-        if (quantity_ == 0) invested_ = 0.0;
+        quantity = quantity - sold;
+        if (quantity == 0) invested = 0;
     }
 }
+
+// current value = quantity * current price
+double Holding::currentValue() {
+    return quantity * currentPrice;
+}
+
+// profit or loss = current value - invested
+double Holding::profitLoss() {
+    return currentValue() - invested;
+}
+
