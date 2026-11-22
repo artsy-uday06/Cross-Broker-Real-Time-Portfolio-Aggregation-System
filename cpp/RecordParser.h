@@ -1,16 +1,16 @@
 #ifndef RECORDPARSER_H
 #define RECORDPARSER_H
-#include <string>
-#include <vector>
 #include "Trade.h"
+#include "Stock.h"
 
-class RecordParser {
-public:
-    static std::vector<std::string> split(const std::string& line, char delim = '|');
-    static std::string recordType(const std::string& line);  
+const int FIELD_LEN = 80;
 
-    
-    static Trade* parseTrade(const std::string& line);
-    static bool   parsePrice(const std::string& line, std::string& ticker, double& price);
-};
+int splitLine(const char line[], char parts[][FIELD_LEN], int maxParts);
+
+void getRecordType(const char line[], char type[]);
+
+bool parseTrade(const char line[], Trade& result);
+bool parsePrice(const char line[], char ticker[], double& price);
+bool parseInfo(const char line[], char ticker[], char name[], char sector[]);
+bool parseCandle(const char line[], char ticker[], Candle& c);
 #endif
