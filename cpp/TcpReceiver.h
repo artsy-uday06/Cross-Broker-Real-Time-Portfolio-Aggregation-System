@@ -1,18 +1,20 @@
-
 #ifndef TCPRECEIVER_H
 #define TCPRECEIVER_H
-#include <string>
+
+const int BUFFER_SIZE = 4096;
 
 class TcpReceiver {
-private:
-    long        listenSock_;
-    long        clientSock_;
-    std::string buffer_;
 public:
+    long listenSock;
+    long clientSock;
+    char buffer[BUFFER_SIZE];
+    int bufLen;
+
     TcpReceiver();
     ~TcpReceiver();
-    bool start(int port);       
-    bool acceptClient();                  
-    bool readLine(std::string& line);     
+    bool start(int port);
+    bool acceptClient();
+    bool readLine(char line[], int size);
 };
 #endif
+
