@@ -1,10 +1,10 @@
-
-#include "TcpReceiver.h"
 #include <iostream>
+#include <string.h>
+#include "TextUtil.h"
+#include "TcpReceiver.h"
 
 #ifdef _WIN32
   #include <winsock2.h>
-  #include <ws2tcpip.h>
   #define CLOSESOCK closesocket
 #else
   #include <sys/socket.h>
@@ -13,62 +13,87 @@
   #include <unistd.h>
   #define CLOSESOCK close
 #endif
+using namespace std;
 
-TcpReceiver::TcpReceiver() : listenSock_(-1), clientSock_(-1) {
+// constructor: sets up the socket system
+TcpReceiver::TcpReceiver() {
+    listenSock = -1;
+    clientSock = -1;
+    bufLen = 0;
 #ifdef _WIN32
-    WSADATA wsa; WSAStartup(MAKEWORD(2, 2), &wsa);
+    WSADATA wsa;
+    WSAStartup(MAKEWORD(2, 2), &wsa);
 #endif
 }
 
+// destructor: closes the sockets
 TcpReceiver::~TcpReceiver() {
-    if (clientSock_ != -1) CLOSESOCK(clientSock_);
-    if (listenSock_ != -1) CLOSESOCK(listenSock_);
+    if (clientSock != -1) CLOSESOCK(clientSock);
+    if (listenSock != -1) CLOSESOCK(listenSock);
 #ifdef _WIN32
     WSACleanup();
 #endif
 }
 
+// creates the socket and starts listening on the port
 bool TcpReceiver::start(int port) {
-    listenSock_ = (long)socket(AF_INET, SOCK_STREAM, 0);
-    if (listenSock_ < 0) { std::cerr << "socket() failed\n"; return false; }
+    listenSock = socket(AF_INET, SOCK_STREAM, 0);
+    if (listenSock < 0) { cout << "socket failed\n"; return false; }
 
     int yes = 1;
-    setsockopt(listenSock_, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes));
+    setsockopt(listenSock, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes));
 
     sockaddr_in addr;
     addr.sin_family = AF_INET;
-    addr.sin_port = htons((unsigned short)port);
+    addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    for (unsigned i = 0; i < sizeof(addr.sin_zero); ++i) addr.sin_zero[i] = 0;
+    for (unsigned i = 0; i < sizeof(addr.sin_zero); i++) addr.sin_zero[i] = 0;
 
-    if (bind(listenSock_, (sockaddr*)&addr, sizeof(addr)) < 0) { std::cerr << "bind() failed\n"; return false; }
-    if (listen(listenSock_, 1) < 0) { std::cerr << "listen() failed\n"; return false; }
-    std::cout << "[C++] listening on 127.0.0.1:" << port << std::endl;
+    if (bind(listenSock, (sockaddr*)&addr, sizeof(addr)) < 0) { cout << "bind failed\n"; return false; }
+    if (listen(listenSock, 1) < 0) { cout << "listen failed\n"; return false; }
+    cout << "[C++] waiting on port " << port << endl;
     return true;
 }
 
+// waits until Python connects
 bool TcpReceiver::acceptClient() {
-    clientSock_ = (long)accept(listenSock_, NULL, NULL);
-    if (clientSock_ < 0) { std::cerr << "accept() failed\n"; return false; }
-    std::cout << "[C++] Python process connected" << std::endl;
+    clientSock = accept(listenSock, NULL, NULL);
+    if (clientSock < 0) { cout << "accept failed\n"; return false; }
+    cout << "[C++] Python connected" << endl;
     return true;
 }
 
-bool TcpReceiver::readLine(std::string& line) {
+// reads one line of text sent by Python
+bool TcpReceiver::readLine(char line[], int size) {
     while (true) {
-        size_t pos = buffer_.find('\n');
-        if (pos != std::string::npos) {
-            line = buffer_.substr(0, pos);
-            buffer_.erase(0, pos + 1);
-            if (!line.empty() && line[line.size() - 1] == '\r') line.erase(line.size() - 1);
+        int pos = -1;
+        for (int i = 0; i < bufLen; i++) {
+            if (buffer[i] == '\n') { pos = i; break; }
+        }
+        if (pos != -1) {
+            int len = pos;
+            if (len > size - 1) len = size - 1;
+            memcpy(line, buffer, len);
+            line[len] = '\0';
+            removeNewline(line);
+            memmove(buffer, buffer + pos + 1, bufLen - pos - 1);
+            bufLen = bufLen - pos - 1;
             return true;
         }
-        char chunk[1024];
-        int n = (int)recv(clientSock_, chunk, sizeof(chunk), 0);
-        if (n <= 0) {                       // connection closed
-            if (buffer_.empty()) return false;
-            line = buffer_; buffer_.clear(); return true;
+        if (bufLen == BUFFER_SIZE) bufLen = 0;
+
+        int n = recv(clientSock, buffer + bufLen, BUFFER_SIZE - bufLen, 0);
+        if (n <= 0) {
+            if (bufLen == 0) return false;
+            int len = bufLen;
+            if (len > size - 1) len = size - 1;
+            memcpy(line, buffer, len);
+            line[len] = '\0';
+            removeNewline(line);
+            bufLen = 0;
+            return true;
         }
-        buffer_.append(chunk, n);
+        bufLen = bufLen + n;
     }
 }
+
