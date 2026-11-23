@@ -1,34 +1,30 @@
-import os
-
-from sample_data import SAMPLE_TRADES, SAMPLE_PRICES
-
-
-def _live_trades():
-    """Placeholder for live broker APIs (Groww / Zerodha).
-    Returns None when no credentials are configured, which triggers the
-    sample-data fallback. Implement per-broker calls here where permitted."""
-    if not (os.getenv("GROWW_TOKEN") or os.getenv("ZERODHA_TOKEN")):
-        return None
-    
-    return None
+from sample_data import SAMPLE_TRADES, SAMPLE_PRICES, SAMPLE_INFO
+from sample_history import make_candles
 
 
-def _live_prices(tickers):
-    """Placeholder for a market-price source. None -> use sample prices."""
-    return None
-
-
+# returns the list of trades
 def get_trades():
-    trades = _live_trades()
-    if trades is None:
-        print("[collector] live data unavailable, using sample trades")
-        trades = SAMPLE_TRADES
-    return trades
+    print("[collector] using sample trades")
+    return SAMPLE_TRADES
 
 
+# returns the latest price of each ticker
 def get_prices(tickers):
-    prices = _live_prices(tickers)
-    if prices is None:
-        print("[collector] live prices unavailable, using sample prices")
-        prices = SAMPLE_PRICES
-    return {t: prices[t] for t in tickers if t in prices}
+    print("[collector] using sample prices")
+    prices = {}
+    for t in tickers:
+        if t in SAMPLE_PRICES:
+            prices[t] = SAMPLE_PRICES[t]
+    return prices
+
+
+# returns (company name, sector) of a stock
+def get_info(ticker):
+    if ticker in SAMPLE_INFO:
+        return SAMPLE_INFO[ticker]
+    return (ticker, "-")
+
+
+# returns the candle history of a stock
+def get_history(ticker, trades, current_price):
+    return make_candles(ticker, trades, current_price)
