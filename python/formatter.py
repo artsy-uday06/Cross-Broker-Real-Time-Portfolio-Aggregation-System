@@ -1,26 +1,30 @@
-DELIM = "|"
+# removes | from text because | is the separator
+def clean(text):
+    return str(text).replace("|", " ")
 
 
-def _clean(text):
-    """Remove the delimiter and newlines so a field can never break a record."""
-    return str(text).replace(DELIM, " ").replace("\n", " ").replace("\r", " ").strip()
-
-
+# makes a TRADE line
 def format_trade(trade):
-    """trade: dict with broker, ticker, quantity (signed), price, date."""
-    return DELIM.join([
-        "TRADE",
-        _clean(trade["broker"]),
-        _clean(trade["ticker"]).upper(),
-        str(int(trade["quantity"])),
-        f"{float(trade['price']):.2f}",
-        _clean(trade["date"]),
-    ])
+    return ("TRADE|" + clean(trade["broker"]) + "|" + trade["ticker"].upper() + "|" +
+            str(trade["quantity"]) + "|" + str(trade["price"]) + "|" + trade["date"])
 
 
+# makes a PRICE line
 def format_price(ticker, price):
-    return DELIM.join(["PRICE", _clean(ticker).upper(), f"{float(price):.2f}"])
+    return "PRICE|" + ticker.upper() + "|" + str(price)
 
 
+# makes an INFO line
+def format_info(ticker, name, sector):
+    return "INFO|" + ticker.upper() + "|" + clean(name) + "|" + clean(sector)
+
+
+# makes a CANDLE line
+def format_candle(ticker, c):
+    return ("CANDLE|" + ticker.upper() + "|" + c["date"] + "|" + str(c["open"]) + "|" +
+            str(c["high"]) + "|" + str(c["low"]) + "|" + str(c["close"]))
+
+
+# makes the END line
 def format_end():
     return "END"
