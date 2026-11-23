@@ -5,24 +5,22 @@ HOST = "127.0.0.1"
 PORT = 5050
 
 
-def send_records(records, host=HOST, port=PORT, retries=10, delay=1.0):
-    """Connect to the C++ receiver (retrying while it starts) and send
-    every record as one line. Returns the number of records sent."""
+# sends all lines to C++ using a TCP socket
+def send_records(records):
     sock = None
-    for attempt in range(1, retries + 1):
+    for attempt in range(10):
         try:
-            sock = socket.create_connection((host, port), timeout=5)
+            sock = socket.create_connection((HOST, PORT))
             break
-        except OSError as err:
-            print(f"[sender] connect attempt {attempt}/{retries} failed: {err}")
-            time.sleep(delay)
-    if sock is None:
-        raise ConnectionError("Could not reach the C++ process. Start it first.")
+        except OSError:
+            print("[sender] C++ not ready, trying again...")
+            time.sleep(1)
 
-    sent = 0
-    with sock:
-        for rec in records:
-            sock.sendall((rec + "\n").encode("utf-8"))
-            sent += 1
-    print(f"[sender] sent {sent} records")
-    return sent
+    if sock is None:
+        print("[sender] could not connect to C++. Start it first.")
+        return
+
+    for line in records:
+        sock.sendall((line + "\n").encode())
+    sock.close()
+    print("[sender] sent", len(records), "records")
